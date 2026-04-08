@@ -1,0 +1,70 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-base-950 font-body text-steel-100 antialiased;
+  background-image:
+    radial-gradient(circle at top, rgba(120, 214, 255, 0.12), transparent 28%),
+    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.05), transparent 18%),
+    linear-gradient(180deg, #06080c 0%, #091019 52%, #05070b 100%);
+  min-height: 100vh;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(120, 214, 255, 0.4) rgba(255, 255, 255, 0.05);
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(120, 214, 255, 0.5), rgba(18, 134, 198, 0.8));
+  border-radius: 999px;
+}
+
+.section-shell {
+  @apply mx-auto w-full max-w-7xl px-6 py-20 sm:px-8 lg:px-12;
+}
+
+.glass-panel {
+  @apply border border-white/10 bg-white/5 backdrop-blur-xl;
+  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.35);
+}
+
+.section-title {
+  @apply font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl;
+}
+
+.section-kicker {
+  @apply mb-4 text-sm font-semibold uppercase tracking-[0.35em] text-accent-400/80;
+}
+
+.body-copy {
+  @apply text-base leading-7 text-steel-200/90 sm:text-lg;
+}
+
+.button-primary {
+  @apply inline-flex items-center justify-center gap-2 rounded-full border border-accent-400/40 bg-accent-500/15 px-6 py-3 text-sm font-semibold text-white transition duration-300 hover:-translate-y-0.5 hover:border-accent-400/70 hover:bg-accent-500/25 hover:shadow-glow;
+}
+
+.button-secondary {
+  @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-semibold text-steel-100 transition duration-300 hover:-translate-y-0.5 hover:border-white/25 hover:bg-white/10;
+}
+
+.ambient-line {
+  background: linear-gradient(90deg, transparent, rgba(120, 214, 255, 0.8), transparent);
+}
