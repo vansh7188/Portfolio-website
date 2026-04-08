@@ -1,7 +1,52 @@
-node_modules
-dist
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build output
+dist/
+**/dist/
+coverage/
+
+# Environment and local config
 .env
+.env.*
+**/.env
+**/.env.*
+*.local
+!.env.example
+!**/.env.example
+!.env.template
+!**/.env.template
+
+# Private keys and secrets
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+*.csr
+*.pub
+id_rsa
+id_dsa
+id_ecdsa
+id_ed25519
+secrets.*
+
+# Logs
+*.log
+backend/logs/
+
+# Platform/tooling
 .DS_Store
-coverage
-.vercel
-backend/logs
+.vercel/
+
+# Editor/IDE
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*.tmp
+Thumbs.db

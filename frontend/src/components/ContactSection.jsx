@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Github, Linkedin, Mail, Send, Twitter } from "lucide-react";
+import { CheckCircle2, Github, Linkedin, Mail, Send, TriangleAlert, Twitter } from "lucide-react";
 import { motion } from "framer-motion";
 import SectionHeading from "./SectionHeading";
 import { personalInfo, socialLinks } from "../data/portfolio";
@@ -19,22 +19,59 @@ const initialForm = {
 
 function ContactSection() {
   const [formData, setFormData] = useState(initialForm);
-  const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formState, setFormState] = useState({ tone: "idle", message: "" });
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    setSubmitted(true);
-    setFormData(initialForm);
-    window.setTimeout(() => setSubmitted(false), 3500);
+    if (!formData.name || !formData.email || !formData.message) {
+      setFormState({
+        tone: "error",
+        message: "Please fill all fields before sending your message."
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.ok) {
+        throw new Error(data.message || "Failed to send message.");
+      }
+
+      setFormState({
+        tone: "success",
+        message: "Message sent successfully. It is now saved in the database."
+      });
+      setFormData(initialForm);
+      window.setTimeout(() => setFormState({ tone: "idle", message: "" }), 3500);
+    } catch (error) {
+      setFormState({
+        tone: "error",
+        message: error.message || "Could not send message right now."
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <section id="contact" className="section-shell">
+    <section id="contact" className="section-shell section-divider">
       <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
         <div>
           <SectionHeading
@@ -46,7 +83,7 @@ function ContactSection() {
           <div className="mt-10 grid gap-4">
             <a
               href={`mailto:${personalInfo.email}`}
-              className="glass-panel flex items-center gap-4 rounded-[1.5rem] p-5 transition hover:border-accent-400/20 hover:bg-accent-500/10"
+              className="glass-panel glass-hover flex items-center gap-4 rounded-[1.5rem] p-5"
             >
               <span className="rounded-full border border-accent-400/20 bg-accent-500/10 p-3 text-accent-300">
                 <Mail size={18} />
@@ -67,7 +104,7 @@ function ContactSection() {
                     href={link.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="glass-panel flex items-center gap-4 rounded-[1.5rem] p-5 transition hover:-translate-y-1 hover:border-white/20 hover:bg-white/10"
+                    className="glass-panel glass-hover flex items-center gap-4 rounded-[1.5rem] p-5"
                   >
                     <span className="rounded-full border border-white/10 bg-white/5 p-3 text-steel-100">
                       <Icon size={18} />
@@ -103,7 +140,7 @@ function ContactSection() {
                 onChange={handleChange}
                 required
                 placeholder="Your name"
-                className="w-full rounded-2xl border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-steel-400 focus:border-accent-400/40 focus:ring-accent-400/20"
+                className="premium-input"
               />
             </div>
             <div>
@@ -118,7 +155,7 @@ function ContactSection() {
                 onChange={handleChange}
                 required
                 placeholder="you@example.com"
-                className="w-full rounded-2xl border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-steel-400 focus:border-accent-400/40 focus:ring-accent-400/20"
+                className="premium-input"
               />
             </div>
             <div>
@@ -133,18 +170,25 @@ function ContactSection() {
                 onChange={handleChange}
                 required
                 placeholder="Tell me about your idea, role, or collaboration."
-                className="w-full rounded-[1.5rem] border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-steel-400 focus:border-accent-400/40 focus:ring-accent-400/20"
+                className="premium-input min-h-36 rounded-[1.25rem]"
               />
             </div>
 
-            <button type="submit" className="button-primary w-full sm:w-fit">
-              Send Message
+            <button type="submit" className="button-primary w-full sm:w-fit" disabled={isSubmitting}>
+              {isSubmitting ? "Sending..." : "Send Message"}
               <Send size={16} />
             </button>
 
-            {submitted ? (
-              <p className="rounded-2xl border border-accent-400/20 bg-accent-500/10 px-4 py-3 text-sm text-accent-300">
-                Message drafted successfully. Thanks for reaching out!
+            {formState.tone !== "idle" ? (
+              <p
+                className={`flex items-center gap-2 rounded-2xl border px-4 py-3 text-sm ${
+                  formState.tone === "success"
+                    ? "border-accent-400/25 bg-accent-500/10 text-accent-300"
+                    : "border-rose-400/30 bg-rose-500/10 text-rose-200"
+                }`}
+              >
+                {formState.tone === "success" ? <CheckCircle2 size={16} /> : <TriangleAlert size={16} />}
+                {formState.message}
               </p>
             ) : null}
           </div>

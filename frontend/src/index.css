@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -7,15 +7,54 @@
 :root {
   color-scheme: dark;
   scroll-behavior: smooth;
+  --premium-line: rgba(120, 214, 255, 0.24);
+  --premium-glow: 0 18px 50px rgba(13, 39, 63, 0.46);
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+section[id] {
+  scroll-margin-top: 6.5rem;
 }
 
 body {
   @apply bg-base-950 font-body text-steel-100 antialiased;
   background-image:
-    radial-gradient(circle at top, rgba(120, 214, 255, 0.12), transparent 28%),
-    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.05), transparent 18%),
+    radial-gradient(circle at 12% -2%, rgba(63, 188, 246, 0.22), transparent 36%),
+    radial-gradient(circle at 86% 14%, rgba(27, 122, 210, 0.2), transparent 24%),
+    radial-gradient(circle at 40% 95%, rgba(120, 214, 255, 0.12), transparent 25%),
     linear-gradient(180deg, #06080c 0%, #091019 52%, #05070b 100%);
   min-height: 100vh;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.3;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 3px 3px;
+  mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.55), transparent 72%);
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: -15% -12%;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.25;
+  background:
+    linear-gradient(110deg, transparent 20%, rgba(120, 214, 255, 0.2) 38%, transparent 58%),
+    linear-gradient(240deg, transparent 22%, rgba(255, 255, 255, 0.14) 45%, transparent 66%);
+  filter: blur(30px);
+  animation: beamSweep 16s ease-in-out infinite alternate;
 }
 
 * {
@@ -41,12 +80,13 @@ body {
 }
 
 .glass-panel {
-  @apply border border-white/10 bg-white/5 backdrop-blur-xl;
-  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.35);
+  @apply border border-white/10 bg-white/[0.04] backdrop-blur-xl;
+  box-shadow: var(--premium-glow), inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .section-title {
   @apply font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl;
+  letter-spacing: -0.02em;
 }
 
 .section-kicker {
@@ -58,13 +98,135 @@ body {
 }
 
 .button-primary {
-  @apply inline-flex items-center justify-center gap-2 rounded-full border border-accent-400/40 bg-accent-500/15 px-6 py-3 text-sm font-semibold text-white transition duration-300 hover:-translate-y-0.5 hover:border-accent-400/70 hover:bg-accent-500/25 hover:shadow-glow;
+  @apply inline-flex items-center justify-center gap-2 rounded-full border border-accent-400/50 bg-[linear-gradient(120deg,rgba(62,183,245,0.26),rgba(18,134,198,0.2))] px-6 py-3 text-sm font-semibold text-white transition duration-300 hover:-translate-y-1 hover:scale-[1.02] hover:border-accent-400/70 hover:shadow-glow;
+}
+
+.button-primary svg,
+.button-secondary svg {
+  transition: transform 260ms ease;
+}
+
+.button-primary:hover svg,
+.button-secondary:hover svg {
+  transform: translateX(2px);
 }
 
 .button-secondary {
-  @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-semibold text-steel-100 transition duration-300 hover:-translate-y-0.5 hover:border-white/25 hover:bg-white/10;
+  @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-semibold text-steel-100 transition duration-300 hover:-translate-y-1 hover:scale-[1.02] hover:border-white/25 hover:bg-white/10;
+}
+
+.hero-heading {
+  text-shadow: 0 6px 32px rgba(120, 214, 255, 0.12);
 }
 
 .ambient-line {
   background: linear-gradient(90deg, transparent, rgba(120, 214, 255, 0.8), transparent);
+}
+
+.hero-spotlight {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at center, rgba(120, 214, 255, 0.2), transparent 58%);
+  mix-blend-mode: screen;
+  opacity: 0;
+}
+
+.section-divider {
+  position: relative;
+}
+
+.section-divider::before {
+  content: "";
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--premium-line), transparent);
+  opacity: 0.8;
+}
+
+.name-shimmer {
+  background-image: linear-gradient(120deg, #ffffff 20%, #8edfff 52%, #ffffff 82%);
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: textShimmer 5.5s linear infinite;
+}
+
+.glass-hover {
+  transition: transform 280ms ease, border-color 280ms ease, background-color 280ms ease;
+}
+
+.glass-hover:hover {
+  transform: translateY(-6px);
+  border-color: rgba(120, 214, 255, 0.28);
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.premium-input {
+  @apply w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-white placeholder:text-steel-400;
+  transition: border-color 220ms ease, box-shadow 220ms ease, background-color 220ms ease;
+}
+
+.premium-input:focus {
+  outline: none;
+  border-color: rgba(120, 214, 255, 0.45);
+  box-shadow: 0 0 0 3px rgba(120, 214, 255, 0.12), 0 0 30px rgba(21, 93, 145, 0.35);
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+@keyframes textShimmer {
+  0% {
+    background-position: 0% center;
+  }
+
+  100% {
+    background-position: 220% center;
+  }
+}
+
+@keyframes beamSweep {
+  0% {
+    transform: translate3d(-5%, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(3%, -2%, 0) scale(1.04);
+  }
+
+  100% {
+    transform: translate3d(6%, 2%, 0) scale(1.03);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .name-shimmer {
+    animation: none;
+  }
+
+  .hero-spotlight {
+    display: none;
+  }
+
+  body::after {
+    animation: none;
+  }
+
+  .glass-hover,
+  .glass-hover:hover,
+  .button-primary,
+  .button-secondary {
+    transition: none;
+    transform: none;
+  }
+}
+
+@media (max-width: 1023px) {
+  .hero-spotlight {
+    display: none;
+  }
 }

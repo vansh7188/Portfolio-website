@@ -20,7 +20,7 @@ function ProjectsSection() {
   }, [activeFilter]);
 
   return (
-    <section id="projects" className="section-shell">
+    <section id="projects" className="section-shell section-divider">
       <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
         <SectionHeading
           eyebrow="Featured Work"
@@ -29,7 +29,7 @@ function ProjectsSection() {
         />
 
         <div className="flex flex-wrap items-center gap-3">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.25em] text-steel-300">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.25em] text-steel-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
             <Filter size={14} />
             Filter
           </div>
@@ -38,10 +38,10 @@ function ProjectsSection() {
               key={filter}
               type="button"
               onClick={() => setActiveFilter(filter)}
-              className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
+              className={`rounded-full border px-4 py-2 text-sm font-semibold transition duration-300 ${
                 activeFilter === filter
                   ? "border-accent-400/40 bg-accent-500/15 text-white shadow-glow"
-                  : "border-white/10 bg-white/5 text-steel-200 hover:border-white/20 hover:text-white"
+                  : "border-white/10 bg-white/5 text-steel-200 hover:border-accent-400/25 hover:text-white"
               }`}
             >
               {filter}
@@ -58,13 +58,16 @@ function ProjectsSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.55, delay: index * 0.08 }}
-            whileHover={{ y: -8 }}
-            className={`group relative overflow-hidden rounded-[2rem] border p-6 shadow-card transition ${
+            whileHover={{ y: -8, scale: 1.01 }}
+            className={`group relative overflow-hidden rounded-[2rem] border p-6 shadow-card transition duration-300 ${
               project.featured
-                ? "border-accent-400/20 bg-[linear-gradient(180deg,rgba(120,214,255,0.12),rgba(255,255,255,0.04))]"
-                : "border-white/10 bg-white/[0.04]"
+                ? "border-accent-400/20 bg-[linear-gradient(180deg,rgba(120,214,255,0.18),rgba(255,255,255,0.04))]"
+                : "border-white/10 bg-white/[0.04] hover:border-accent-400/20"
             }`}
           >
+            <div className="pointer-events-none absolute inset-[1px] rounded-[1.9rem] border border-white/5 opacity-70" />
+            <div className="pointer-events-none absolute inset-x-8 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(120,214,255,0.7),transparent)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+            <div className="pointer-events-none absolute -left-20 top-0 h-full w-28 -skew-x-12 bg-[linear-gradient(90deg,transparent,rgba(120,214,255,0.15),transparent)] opacity-0 transition duration-700 group-hover:left-[110%] group-hover:opacity-100" />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(120,214,255,0.12),transparent_55%)] opacity-0 transition duration-500 group-hover:opacity-100" />
             <div className="relative">
               <div className="mb-8 flex items-start justify-between gap-4">

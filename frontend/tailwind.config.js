@@ -25,7 +25,7 @@ export default {
         }
       },
       fontFamily: {
-        display: ["Sora", "sans-serif"],
+        display: ["Space Grotesk", "sans-serif"],
         body: ["Manrope", "sans-serif"]
       },
       boxShadow: {

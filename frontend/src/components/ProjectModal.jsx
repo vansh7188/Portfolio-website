@@ -9,17 +9,19 @@ function ProjectModal({ project, onClose }) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[70] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-[70] flex items-center justify-center bg-black/75 p-4 backdrop-blur-md"
           onClick={onClose}
         >
           <motion.div
             initial={{ opacity: 0, y: 24, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 12, scale: 0.98 }}
-            transition={{ duration: 0.25 }}
+            transition={{ duration: 0.28, ease: "easeOut" }}
             onClick={(event) => event.stopPropagation()}
-            className="glass-panel relative w-full max-w-2xl rounded-[2rem] p-8"
+            className="glass-panel relative w-full max-w-2xl overflow-hidden rounded-[2rem] p-8"
           >
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_10%,rgba(120,214,255,0.18),transparent_45%)]" />
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(120,214,255,0.75),transparent)]" />
             <button
               type="button"
               onClick={onClose}

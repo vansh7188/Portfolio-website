@@ -21,7 +21,7 @@ const proficiencyMap = {
 
 function SkillsSection() {
   return (
-    <section id="skills" className="section-shell">
+    <section id="skills" className="section-shell section-divider">
       <SectionHeading
         eyebrow="Capabilities"
         title="The stack behind the experience."
@@ -36,7 +36,7 @@ function SkillsSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.5, delay: index * 0.08 }}
-            className="glass-panel rounded-[2rem] p-6 sm:p-8"
+            className="glass-panel glass-hover rounded-[2rem] p-6 sm:p-8"
           >
             <div className="mb-6 flex items-center justify-between gap-4">
               <h3 className="font-display text-2xl text-white">{group.category}</h3>
