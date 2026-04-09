@@ -81,7 +81,79 @@ body::after {
 
 .glass-panel {
   @apply border border-white/10 bg-white/[0.04] backdrop-blur-xl;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
   box-shadow: var(--premium-glow), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.glass-panel::after {
+  content: "";
+  position: absolute;
+  inset: -120% -35%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 32%,
+    rgba(120, 214, 255, 0.2) 48%,
+    rgba(255, 255, 255, 0.18) 52%,
+    transparent 68%
+  );
+  transform: translateX(-48%) rotate(8deg);
+  transition: opacity 220ms ease;
+}
+
+.glass-panel:hover::after {
+  opacity: 1;
+  animation: glassSheen 1.25s ease;
+}
+
+.app-ambient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.app-ambient::before,
+.app-ambient::after {
+  content: "";
+  position: absolute;
+  width: 28rem;
+  height: 28rem;
+  border-radius: 999px;
+  filter: blur(60px);
+  opacity: 0.26;
+}
+
+.app-ambient::before {
+  left: -8rem;
+  top: 4rem;
+  background: radial-gradient(circle, rgba(120, 214, 255, 0.7), rgba(120, 214, 255, 0));
+  animation: ambientOrbitA 16s ease-in-out infinite;
+}
+
+.app-ambient::after {
+  right: -10rem;
+  bottom: 8rem;
+  background: radial-gradient(circle, rgba(66, 163, 221, 0.65), rgba(66, 163, 221, 0));
+  animation: ambientOrbitB 18s ease-in-out infinite;
+}
+
+.cursor-aura {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 380px;
+  height: 380px;
+  pointer-events: none;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(120, 214, 255, 0.2), transparent 65%);
+  mix-blend-mode: screen;
+  filter: blur(3px);
+  z-index: 1;
 }
 
 .section-title {
@@ -203,6 +275,44 @@ body::after {
   }
 }
 
+@keyframes glassSheen {
+  0% {
+    transform: translateX(-60%) rotate(8deg);
+  }
+
+  100% {
+    transform: translateX(60%) rotate(8deg);
+  }
+}
+
+@keyframes ambientOrbitA {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.95);
+  }
+
+  50% {
+    transform: translate3d(5rem, -2rem, 0) scale(1.08);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0) scale(0.95);
+  }
+}
+
+@keyframes ambientOrbitB {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(-5rem, 2.5rem, 0) scale(1.1);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .name-shimmer {
     animation: none;
@@ -214,6 +324,16 @@ body::after {
 
   body::after {
     animation: none;
+  }
+
+  .app-ambient::before,
+  .app-ambient::after,
+  .glass-panel::after {
+    animation: none;
+  }
+
+  .cursor-aura {
+    display: none;
   }
 
   .glass-hover,
